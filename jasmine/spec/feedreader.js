@@ -91,15 +91,14 @@ $(function() {
     describe('Initial Entries', function() {
         // loadFeed is asynchronous, beforeEach and done() will make sure it runs before the rest of the suite is executed
         beforeEach(function(done) {
-            loadFeed(0);
-            done();
+            loadFeed(0, done);
         });
 
         it('it should have at least one .entry element within .feed container', function() {
             // Store the feeds in the feed variable
-            let feed = document.querySelectorAll('.feed');
+            let feedEntries = document.querySelectorAll('.feed .entry');
             // Check if the feeds variable has more than zero entries
-            expect(feed.length).not.toBe(0);
+            expect(feedEntries.length).not.toBe(0);
         });
     })
     /* TODO: Write a new test suite named "New Feed Selection" */
@@ -116,14 +115,16 @@ $(function() {
         // to make sure it finishes running before the rest of the suite continues
         beforeEach(function(done) {
             // Loads the first feed with the index of 0 (zero)
-            loadFeed(0);
-            // Stores the first feed in the initialFeed variable
-            initialFeed = document.querySelectorAll('.feed');
-            // Loads the next feed with the index of 1 (one)
-            loadFeed(1);
-            // Stores the feed in the newFeed variable
-            newFeed = document.querySelectorAll('.feed');
-            done();
+            loadFeed(0, function() {
+                // Stores the first feed in the initialFeed variable
+                initialFeed = document.querySelector('.feed').innerHTML;
+                // Recursively call the loadFeed function to load the second feed with the index of 1 (one)
+                loadFeed(1, function() {
+                    // Stores the feed in the newFeed variable
+                    newFeed = document.querySelector('.feed').innerHTML;
+                    done();
+                });
+            });
         });
 
         it('it should change the content when a new feed is loaded', function() {
