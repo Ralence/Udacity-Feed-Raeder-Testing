@@ -16,6 +16,7 @@ In this project the tests are added using Jasmine to test the functionality of t
 
 ## Dependencies
 
+* jasmine.js
 * Google Fonts
 * normalize.css
 * jquery
